@@ -1,0 +1,9 @@
+BasedOnStyle: Mozilla
+IndentWidth: 4
+
+Language: Cpp
+ColumnLimit: 100
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+AccessModifierOffset: -4
+BreakBeforeBraces: Allman

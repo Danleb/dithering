@@ -1,0 +1,13 @@
+###############################
+# Core EditorConfig Options   #
+###############################
+# You can learn more about editorconfig here: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
+root = true
+# All files
+[*]
+
+# Code files
+[*.{cpp,h}]
+indent_size = 4
+insert_final_newline = true
+charset = utf-8-bom
