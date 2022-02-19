@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
         std::cerr << "Failed to load image at: " << imagePath << std::endl;
         exit(5);
     }
-    bamboo::Image image{ imagePath };
+    bamboo::ImageF image{ imagePath };
 
     // dither the image
     bamboo::FloydSteinbergDithering ditheringAlg{ *config };

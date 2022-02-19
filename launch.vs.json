@@ -2,13 +2,71 @@
   "version": "0.2.1",
   "defaults": {},
   "configurations": [
+    // All black-whites
     {
       "type": "default",
       "project": "CMakeLists.txt",
       "projectTarget": "",
-      "name": "Make BlackWhite Cat",
+      "name": "BlackWhite Arc",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/Arc.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "BlackWhite Cat",
       "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/Cat.jpg" ]
     },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "BlackWhite Cathedral",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/Cathedral.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "BlackWhite CityView",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/CityView.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "BlackWhite House",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/House.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "BlackWhite LakeView",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/LakeView.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "BlackWhite LegoMan",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/LegoMan.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "BlackWhite Light gray solid color",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/LightGray_c3.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "Dark gray solid color",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/DarkGray.jpg" ]
+    },
+    // Grayscale
     {
       "type": "default",
       "project": "CMakeLists.txt",
@@ -16,6 +74,7 @@
       "name": "Grayscale building",
       "args": [ "../../../../configs/Grayscale8.json", "../../../../pics/House.jpg" ]
     },
+    // RGB
     {
       "type": "default",
       "project": "CMakeLists.txt",
@@ -30,6 +89,7 @@
       "name": "RGB Sea View",
       "args": [ "../../../../configs/RGB_Palette.json", "../../../../pics/SeaView.jpg" ]
     },
+    // Small palette
     {
       "type": "default",
       "project": "CMakeLists.txt",
@@ -37,33 +97,13 @@
       "name": "Small palette tower",
       "args": [ "../../../../configs/SmallPalette.json", "../../../../pics/Tower.jpg" ]
     },
+    // Custom
     {
       "type": "default",
       "project": "CMakeLists.txt",
       "projectTarget": "",
       "name": "Custom2",
       "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/Paris.jpg" ]
-    },
-    {
-      "type": "default",
-      "project": "CMakeLists.txt",
-      "projectTarget": "",
-      "name": "Black white cube",
-      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/Cube.jpg" ]
-    },
-    {
-      "type": "default",
-      "project": "CMakeLists.txt",
-      "projectTarget": "",
-      "name": "Light gray solid color",
-      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/LightGray.jpg" ]
-    },
-    {
-      "type": "default",
-      "project": "CMakeLists.txt",
-      "projectTarget": "",
-      "name": "Dark gray solid color",
-      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/DarkGray.jpg" ]
     }
   ]
 }

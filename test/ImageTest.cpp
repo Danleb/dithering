@@ -9,7 +9,7 @@ constexpr bamboo::ColorB DefaultColor{ 100, 123, 212, 255 };
 constexpr bamboo::ColorB TransparentBlack{ 0, 0, 0, 0 };
 constexpr bamboo::ColorB OpaqueWhite{ 255, 255, 255, 255 };
 
-void fillImage(bamboo::Image& image, const bamboo::ColorB& color = DefaultColor)
+void fillImage(bamboo::ImageB& image, const bamboo::ColorB& color = DefaultColor)
 {
     for (size_t x = 0; x < image.getWidth(); ++x)
     {
@@ -25,10 +25,11 @@ namespace bamboo::test
 {
 const auto CatPath = "../../../../pics/Cat.jpg";
 const auto BuildingPath = "../../../../pics/Cathedral.jpg";
+const auto LightGrayPath = "../../../../pics/LightGray_c3.jpg";
 
 TEST(ImageTest, DefaultConstructor)
 {
-    Image image{};
+    ImageB image{};
     EXPECT_FALSE(static_cast<bool>(image));
     EXPECT_FALSE(image.isValid());
     EXPECT_EQ(image.getWidth(), 0);
@@ -39,10 +40,10 @@ TEST(ImageTest, DefaultConstructor)
 
 TEST(ImageTest, PathConstructor1)
 {
-    Image image{ CatPath };
+    ImageB image{ CatPath };
     EXPECT_EQ(image.getWidth(), 1770);
     EXPECT_EQ(image.getHeight(), 1180);
-    EXPECT_NE(image.getData(), nullptr);
+    ASSERT_NE(image.getData(), nullptr);
     EXPECT_EQ(image.size(), 1770 * 1180 * 4);
     EXPECT_TRUE(static_cast<bool>(image));
     EXPECT_TRUE(image.isValid());
@@ -50,20 +51,33 @@ TEST(ImageTest, PathConstructor1)
 
 TEST(ImageTest, PathConstructor2)
 {
-    Image image{ BuildingPath };
+    ImageB image{ BuildingPath };
     EXPECT_EQ(image.getWidth(), 1336);
     EXPECT_EQ(image.getHeight(), 1779);
-    EXPECT_NE(image.getData(), nullptr);
+    ASSERT_NE(image.getData(), nullptr);
     EXPECT_EQ(image.size(), 1336 * 1779 * 4);
     EXPECT_TRUE(static_cast<bool>(image));
     EXPECT_TRUE(image.isValid());
+}
+
+TEST(ImageFloatTest, LightGray_PathConstructor)
+{
+    ImageF image{ LightGrayPath };
+    EXPECT_EQ(image.getWidth(), 1377);
+    EXPECT_EQ(image.getHeight(), 1127);
+    ASSERT_NE(image.getData(), nullptr);
+    EXPECT_EQ(image.size(), 1377 * 1127 * 4 * 4);
+    EXPECT_TRUE(static_cast<bool>(image));
+    EXPECT_TRUE(image.isValid());
+
+    EXPECT_EQ(image.getPixel(0, 0), ColorF(0.7647, 0.7647, 0.7647, 1.0));
 }
 
 TEST(ImageTest, ImageFromMemory)
 {
     const auto width = 1024;
     const auto height = 512;
-    Image image{ width, height };
+    ImageB image{ width, height };
     fillImage(image);
 
     EXPECT_EQ(image.getWidth(), 1024);
@@ -79,8 +93,8 @@ TEST(ImageTest, ImageFromMemory)
 
 TEST(ImageTest, CopyConstructor)
 {
-    Image im1{ CatPath };
-    Image im2{ im1 };
+    ImageB im1{ CatPath };
+    ImageB im2{ im1 };
 
     EXPECT_NE(im1.getData(), im2.getData());
     EXPECT_EQ(im1.getWidth(), im2.getWidth());

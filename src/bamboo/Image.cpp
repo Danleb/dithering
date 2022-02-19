@@ -9,19 +9,36 @@
 
 #include <assert.h>
 
+namespace
+{
+
+std::shared_ptr<char[]> convertPath(const std::filesystem::path& path)
+{
+    constexpr auto BUFFER_SIZE = 4096;
+    std::shared_ptr<char[]> buffer{ new char[BUFFER_SIZE] };
+    stbiw_convert_wchar_to_utf8(buffer.get(), BUFFER_SIZE, path.c_str());
+    return buffer;
+}
+
+} // namespace
+
 namespace bamboo
 {
 
-constexpr auto TARGET_CHANNELS_COUNT = 4;
+// Instantiate template Image class only for 2 types, since only two will be supported.
+template class Image<uint8_t>;
+template class Image<float>;
 
-Image::Image()
+template<typename TColorChannel>
+Image<TColorChannel>::Image()
   : m_width{ 0 }
   , m_height{ 0 }
   , m_data{ nullptr }
 {
 }
 
-Image::Image(const std::filesystem::path& path)
+template<typename TColorChannel>
+Image<TColorChannel>::Image(const std::filesystem::path& path)
   : Image()
 {
     const auto buffer = convertPath(path);
@@ -29,20 +46,24 @@ Image::Image(const std::filesystem::path& path)
     {
         return;
     }
-    m_data = stbi_load(buffer.get(), &m_width, &m_height, nullptr, TARGET_CHANNELS_COUNT);
+
+    if constexpr (std::is_same_v<TColorChannel, uint8_t>)
+    {
+        m_data = stbi_load(buffer.get(), &m_width, &m_height, nullptr, TARGET_CHANNELS_COUNT);
+    }
+    else
+    {
+        // we want to load image to float buffer, but without gamma correction
+        stbi_ldr_to_hdr_gamma(1.0f);
+        m_data = stbi_loadf(buffer.get(), &m_width, &m_height, nullptr, TARGET_CHANNELS_COUNT);
+        stbi_ldr_to_hdr_gamma(2.2f);
+    }
+
     assert(m_data);
 }
 
-Image::Image(const Image& image) noexcept
-  : m_width{ image.m_width }
-  , m_height{ image.m_height }
-  , m_data{ static_cast<ImageData>(malloc(size())) }
-{
-    assert(m_data);
-    std::memcpy(m_data, image.m_data, image.size());
-}
-
-Image::Image(size_t width, size_t height)
+template<typename TColorChannel>
+Image<TColorChannel>::Image(size_t width, size_t height)
   : m_width{ static_cast<int>(width) }
   , m_height{ static_cast<int>(height) }
   // it's very important to allocate memory with the same method that stbi uses for allocation
@@ -51,7 +72,18 @@ Image::Image(size_t width, size_t height)
     assert(m_data);
 }
 
-Image::Image(Image&& image) noexcept
+template<typename TColorChannel>
+Image<TColorChannel>::Image(const Image& image)
+  : m_width{ image.m_width }
+  , m_height{ image.m_height }
+  , m_data{ static_cast<ImageData>(malloc(size())) }
+{
+    assert(m_data);
+    std::memcpy(m_data, image.m_data, size());
+}
+
+template<typename TColorChannel>
+Image<TColorChannel>::Image(Image<TColorChannel>&& image) noexcept
   : m_width{ image.m_width }
   , m_height{ image.m_height }
   , m_data{ image.m_data }
@@ -61,12 +93,14 @@ Image::Image(Image&& image) noexcept
     image.m_data = nullptr;
 }
 
-Image::~Image()
+template<typename TColorChannel>
+Image<TColorChannel>::~Image()
 {
     destroy();
 }
 
-Image& Image::operator=(const Image& image) noexcept
+template<typename TColorChannel>
+Image<TColorChannel>& Image<TColorChannel>::operator=(const Image<TColorChannel>& image)
 {
     if (this != &image)
     {
@@ -74,14 +108,16 @@ Image& Image::operator=(const Image& image) noexcept
 
         m_width = image.m_width;
         m_height = image.m_height;
-        m_data = stbi_load_from_memory(
-          image.m_data, image.size(), &m_width, &m_height, nullptr, TARGET_CHANNELS_COUNT);
+        m_data = static_cast<ImageData>(malloc(size()));
+        assert(m_data);
+        std::memcpy(m_data, image.m_data, size());
     }
 
     return *this;
 }
 
-Image& Image::operator=(Image&& rhs) noexcept
+template<typename TColorChannel>
+Image<TColorChannel>& Image<TColorChannel>::operator=(Image&& rhs) noexcept
 {
     if (this == &rhs)
     {
@@ -97,85 +133,110 @@ Image& Image::operator=(Image&& rhs) noexcept
     return *this;
 }
 
-int Image::getWidth() const
+template<typename TColorChannel>
+int Image<TColorChannel>::getWidth() const
 {
     return m_width;
 }
 
-int Image::getHeight() const
+template<typename TColorChannel>
+int Image<TColorChannel>::getHeight() const
 {
     return m_height;
 }
 
-ImageData Image::getData()
+template<typename TColorChannel>
+Image<TColorChannel>::ImageData Image<TColorChannel>::getData()
 {
     return m_data;
 }
 
-const ImageData Image::getData() const
+template<typename TColorChannel>
+Image<TColorChannel>::ConstImageData Image<TColorChannel>::getData() const
 {
     return m_data;
 }
 
-size_t Image::size() const
+template<typename TColorChannel>
+size_t Image<TColorChannel>::size() const
 {
-    return m_width * m_height * TARGET_CHANNELS_COUNT;
+    return m_width * m_height * TARGET_CHANNELS_COUNT * sizeof(TColorChannel);
 }
 
-void Image::save(const std::filesystem::path& path) const
+template<typename TColorChannel>
+void Image<TColorChannel>::save(const std::filesystem::path& path) const
 {
     const auto buffer = convertPath(path);
-    stbi_write_png(buffer.get(),
-                   m_width,
-                   m_height,
-                   TARGET_CHANNELS_COUNT,
-                   m_data,
-                   m_width * TARGET_CHANNELS_COUNT);
+    const auto& tempImage = getImageForSave();
+    const auto res = stbi_write_png(buffer.get(),
+                                    m_width,
+                                    m_height,
+                                    TARGET_CHANNELS_COUNT,
+                                    tempImage.getData(),
+                                    m_width * TARGET_CHANNELS_COUNT);
+    assert(res);
 }
 
-ColorB Image::getPixel(size_t x, size_t y) const
+template<typename TColorChannel>
+Image<TColorChannel>::ColorT Image<TColorChannel>::getPixel(size_t x, size_t y) const
 {
     return const_cast<Image*>(this)->getPixel(x, y);
 }
 
-ColorB& Image::getPixel(size_t x, size_t y)
+template<typename TColorChannel>
+Image<TColorChannel>::ColorT& Image<TColorChannel>::getPixel(size_t x, size_t y)
 {
-    unsigned char* p = &m_data[y * m_width * TARGET_CHANNELS_COUNT + x * TARGET_CHANNELS_COUNT];
-    ColorB* c = reinterpret_cast<ColorB*>(p);
+    TColorChannel* p = &m_data[y * m_width * TARGET_CHANNELS_COUNT + x * TARGET_CHANNELS_COUNT];
+    auto c = reinterpret_cast<Image<TColorChannel>::ColorT*>(p);
     return *c;
 }
 
-void Image::setPixel(size_t x, size_t y, const ColorB& color)
+template<typename TColorChannel>
+void Image<TColorChannel>::setPixel(size_t x, size_t y, const Image<TColorChannel>::ColorT& color)
 {
     auto& ref = getPixel(x, y);
     ref = color;
 }
 
-void Image::destroy()
+template<typename TColorChannel>
+bool Image<TColorChannel>::isValid() const
+{
+    return m_data != nullptr;
+}
+
+template<typename TColorChannel>
+Image<TColorChannel>::operator bool()
+{
+    return isValid();
+}
+
+template<typename TColorChannel>
+size_t Image<TColorChannel>::getPixelsCount() const
+{
+    return m_width * m_height;
+}
+
+template<typename TColorChannel>
+const Image<uint8_t> Image<TColorChannel>::getImageForSave() const
+{
+    if constexpr (std::is_same_v<TColorChannel, uint8_t>)
+    {
+        return *this;
+    }
+    if constexpr (std::is_same_v<TColorChannel, float>)
+    {
+        return ImageB(*this);
+    }
+}
+
+template<typename TColorChannel>
+void Image<TColorChannel>::destroy()
 {
     if (m_data)
     {
         stbi_image_free(m_data);
         m_data = nullptr;
     }
-}
-
-bool Image::isValid() const
-{
-    return m_data != nullptr;
-}
-
-Image::operator bool()
-{
-    return isValid();
-}
-
-std::shared_ptr<char[]> Image::convertPath(const std::filesystem::path& path) const
-{
-    constexpr auto BUFFER_SIZE = 4096;
-    std::shared_ptr<char[]> buffer{ new char[BUFFER_SIZE] };
-    stbiw_convert_wchar_to_utf8(buffer.get(), BUFFER_SIZE, path.c_str());
-    return buffer;
 }
 
 }

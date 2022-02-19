@@ -8,11 +8,11 @@ void BM_FloydSteinbergDithering(benchmark::State& state,
                                 const std::string& configPath)
 {
     const auto config = bamboo::DitheringConfiguration::loadConfiguration(configPath);
-    const bamboo::Image originalImage{ imagePath };
+    const bamboo::ImageF originalImage{ imagePath };
 
     for (auto _ : state)
     {
-        bamboo::Image imageToDither{ originalImage };
+        bamboo::ImageF imageToDither{ originalImage };
         bamboo::FloydSteinbergDithering alg(*config);
         alg.dither(imageToDither);
         benchmark::DoNotOptimize(imageToDither.getPixel(0, 0));
@@ -33,6 +33,20 @@ void BM_FloydSteinbergDithering_BlackWhiteParis(benchmark::State& state)
     BM_FloydSteinbergDithering(state, imagePath, configPath);
 }
 
+void BM_FloydSteinbergDithering_BlackWhite_LakeView(benchmark::State& state)
+{
+    const auto imagePath = "../../../../pics/LakeView.jpg";
+    const auto configPath = "../../../../configs/BlackWhite.json";
+    BM_FloydSteinbergDithering(state, imagePath, configPath);
+}
+
+void BM_FloydSteinbergDithering_BlackWhite_Cathedral(benchmark::State& state)
+{
+    const auto imagePath = "../../../../pics/Cathedral.jpg";
+    const auto configPath = "../../../../configs/BlackWhite.json";
+    BM_FloydSteinbergDithering(state, imagePath, configPath);
+}
+
 void BM_FloydSteinbergDithering_RGB_CityView(benchmark::State& state)
 {
     const auto imagePath = "../../../../pics/CityView.jpg";
@@ -42,4 +56,6 @@ void BM_FloydSteinbergDithering_RGB_CityView(benchmark::State& state)
 
 BENCHMARK(BM_FloydSteinbergDithering_BlackWhiteCat);
 BENCHMARK(BM_FloydSteinbergDithering_BlackWhiteParis);
+BENCHMARK(BM_FloydSteinbergDithering_BlackWhite_LakeView);
+BENCHMARK(BM_FloydSteinbergDithering_BlackWhite_Cathedral);
 BENCHMARK(BM_FloydSteinbergDithering_RGB_CityView);

@@ -18,7 +18,7 @@ inline float toFloat(uint32_t integerColorChannel)
 }
 
 // Expects 3-component color without alpha-channel
-bamboo::ColorF toColor(uint32_t v)
+bamboo::ColorF extractColor(uint32_t v)
 {
     const uint32_t rv = (v >> 16) & 0xFF;
     const uint32_t gv = (v >> 8) & 0xFF;
@@ -78,7 +78,7 @@ DitheringConfiguration::DitheringConfiguration(const rapidjson::Document& config
         std::stringstream ss;
         ss << std::hex << colorCodeStr;
         ss >> colorCode;
-        const auto color = toColor(colorCode);
+        const auto color = extractColor(colorCode);
         m_palette.push_back(color);
     }
 }
