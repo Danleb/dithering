@@ -3,7 +3,7 @@
 #include "DitheringConfiguration.h"
 #include "Image.h"
 
-namespace effects
+namespace bamboo
 {
 class FloydSteinbergDithering
 {

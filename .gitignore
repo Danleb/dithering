@@ -6,3 +6,4 @@ TestResults/
 obj/
 bin/
 .gradle/
+samples/

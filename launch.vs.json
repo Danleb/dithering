@@ -4,10 +4,66 @@
   "configurations": [
     {
       "type": "default",
-      "project": "CMakeLists.txt",      
+      "project": "CMakeLists.txt",
       "projectTarget": "",
       "name": "Make BlackWhite Cat",
-      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/1.jpg" ]
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/Cat.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "Grayscale building",
+      "args": [ "../../../../configs/Grayscale8.json", "../../../../pics/House.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "RGB City View",
+      "args": [ "../../../../configs/RGB_Palette.json", "../../../../pics/CityView.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "RGB Sea View",
+      "args": [ "../../../../configs/RGB_Palette.json", "../../../../pics/SeaView.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "Small palette tower",
+      "args": [ "../../../../configs/SmallPalette.json", "../../../../pics/Tower.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "Custom2",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/Paris.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "Black white cube",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/Cube.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "Light gray solid color",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/LightGray.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "Dark gray solid color",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/DarkGray.jpg" ]
     }
   ]
 }

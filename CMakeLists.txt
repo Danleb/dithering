@@ -7,5 +7,7 @@ include (utils.cmake)
 InstallAndSetupConanPackages()
 
 add_subdirectory(src)
+add_subdirectory(perf)
+add_subdirectory(test)
 
 enable_testing()
