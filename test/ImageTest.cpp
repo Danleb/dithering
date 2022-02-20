@@ -7,9 +7,9 @@
 namespace
 {
 
-constexpr bamboo::ColorB DefaultColor{ 100, 123, 212, 255 };
-constexpr bamboo::ColorB TransparentBlack{ 0, 0, 0, 0 };
-constexpr bamboo::ColorB OpaqueWhite{ 255, 255, 255, 255 };
+constexpr bamboo::ColorB DefaultColor{ 100, 123, 212 };
+constexpr bamboo::ColorB TransparentBlack{ 0, 0, 0 };
+constexpr bamboo::ColorB OpaqueWhite{ 255, 255, 255 };
 
 void fillImage(bamboo::ImageB& image, const bamboo::ColorB& color = DefaultColor)
 {
@@ -46,7 +46,7 @@ TEST(ImageTest, PathConstructor1)
     EXPECT_EQ(image.getWidth(), 1770);
     EXPECT_EQ(image.getHeight(), 1180);
     ASSERT_NE(image.getData(), nullptr);
-    EXPECT_EQ(image.size(), 1770 * 1180 * 4);
+    EXPECT_EQ(image.size(), 1770 * 1180 * 3);
     EXPECT_TRUE(static_cast<bool>(image));
     EXPECT_TRUE(image.isValid());
 }
@@ -57,7 +57,7 @@ TEST(ImageTest, PathConstructor2)
     EXPECT_EQ(image.getWidth(), 1336);
     EXPECT_EQ(image.getHeight(), 1779);
     ASSERT_NE(image.getData(), nullptr);
-    EXPECT_EQ(image.size(), 1336 * 1779 * 4);
+    EXPECT_EQ(image.size(), 1336 * 1779 * 3);
     EXPECT_TRUE(static_cast<bool>(image));
     EXPECT_TRUE(image.isValid());
 }
@@ -68,10 +68,10 @@ TEST(ImageFloatTest, LightGray_PathConstructor)
     EXPECT_EQ(image.getWidth(), 1377);
     EXPECT_EQ(image.getHeight(), 1127);
     ASSERT_NE(image.getData(), nullptr);
-    EXPECT_EQ(image.size(), 1377 * 1127 * 4 * 4);
+    EXPECT_EQ(image.size(), 1377 * 1127 * 3 * 4);
     EXPECT_TRUE(static_cast<bool>(image));
     EXPECT_TRUE(image.isValid());
-    EXPECT_THAT(image.getPixel(0, 0), ColorsFEqual(ColorF{ 0.7647, 0.7647, 0.7647, 1.0 }));
+    EXPECT_THAT(image.getPixel(0, 0), ColorsFEqual(ColorF{ 0.7647, 0.7647, 0.7647 }));
 }
 
 TEST(ImageTest, ImageFromMemory)
@@ -84,12 +84,12 @@ TEST(ImageTest, ImageFromMemory)
     EXPECT_EQ(image.getWidth(), 1024);
     EXPECT_EQ(image.getHeight(), 512);
     EXPECT_NE(image.getData(), nullptr);
-    EXPECT_EQ(image.size(), width * height * 4);
+    EXPECT_EQ(image.size(), width * height * 3);
     const ColorB color = image.getPixel(0, 0);
     EXPECT_EQ(DefaultColor, color);
 
-    image.setPixel(0, 0, { 255, 255, 255, 255 });
-    EXPECT_EQ(image.getPixel(0, 0), ColorB(255, 255, 255, 255));
+    image.setPixel(0, 0, { 255, 255, 255 });
+    EXPECT_EQ(image.getPixel(0, 0), ColorB(255, 255, 255));
 }
 
 TEST(ImageTest, CopyConstructor)

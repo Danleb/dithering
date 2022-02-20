@@ -44,7 +44,8 @@ int main(int argc, char* argv[])
 
     // save the image
     auto newFilename = imagePath.stem();
-    newFilename.concat("_dithered.png");
+    newFilename.concat("_dithered");
+    newFilename.replace_extension(imagePath.extension());
     auto outputPath = imagePath;
     outputPath.replace_filename(newFilename);
     image.save(outputPath);

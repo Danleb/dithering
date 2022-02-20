@@ -5,11 +5,11 @@
 namespace bamboo
 {
 template<typename TColorChannel>
-using Color = glm::vec<4, TColorChannel>;
+using Color = glm::vec<3, TColorChannel>;
 
 // Color Byte
 using ColorB = Color<uint8_t>;
-static_assert(sizeof(ColorB) == 4 * sizeof(uint8_t));
+static_assert(sizeof(ColorB) == 3 * sizeof(uint8_t));
 
 // Color Float
 using ColorF = Color<float>;

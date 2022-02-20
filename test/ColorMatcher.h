@@ -24,15 +24,14 @@ MATCHER_P(ColorsFEqual,
 {
     return Matches(FloatNear(color.r, COLOR_EPS))(arg.r) &&
            Matches(FloatNear(color.g, COLOR_EPS))(arg.g) &&
-           Matches(FloatNear(color.b, COLOR_EPS))(arg.b) &&
-           Matches(FloatNear(color.a, COLOR_EPS))(arg.a);
+           Matches(FloatNear(color.b, COLOR_EPS))(arg.b);
 }
 
 MATCHER_P(ColorsBEqual,
           color,
           std::string((negation ? "doesn't equal" : "equals")) + " to " + PrintToString(color))
 {
-    return color.r == arg.r && color.g == arg.g && color.b == arg.b && color.a == arg.a;
+    return color.r == arg.r && color.g == arg.g && color.b == arg.b;
 }
 
 }

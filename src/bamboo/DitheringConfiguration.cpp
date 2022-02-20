@@ -27,7 +27,7 @@ bamboo::ColorF extractColor(uint32_t v)
     const float r = toFloat(rv);
     const float g = toFloat(gv);
     const float b = toFloat(bv);
-    return { r, g, b, 1.0f };
+    return { r, g, b };
 }
 
 std::optional<rapidjson::Document> loadJsonDoc(const std::filesystem::path& path)

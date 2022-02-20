@@ -172,19 +172,21 @@ void Image<TColorChannel>::save(const std::filesystem::path& path) const
     const auto extension = path.extension();
     if (extension == ".png")
     {
-        assert(stbi_write_png(buffer.get(),
-                              m_width,
-                              m_height,
-                              TARGET_CHANNELS_COUNT,
-                              tempImage.getData(),
-                              m_width * TARGET_CHANNELS_COUNT));
+        const auto res = stbi_write_png(buffer.get(),
+                                        m_width,
+                                        m_height,
+                                        TARGET_CHANNELS_COUNT,
+                                        tempImage.getData(),
+                                        m_width * TARGET_CHANNELS_COUNT);
+        assert(res);
     }
     if (extension == ".jpg")
     {
         // from 1 to 100
         const auto quality = 100;
-        stbi_write_jpg(
+        const auto res = stbi_write_jpg(
           buffer.get(), m_width, m_height, TARGET_CHANNELS_COUNT, tempImage.getData(), quality);
+        assert(res);
     }
 }
 
