@@ -21,7 +21,7 @@ namespace bamboo
 template<typename TColorChannel>
 class Image
 {
-    static constexpr auto TARGET_CHANNELS_COUNT = 4;
+    static constexpr auto TARGET_CHANNELS_COUNT = 3;
 
 public:
     using ImageData = typename TColorChannel*;
@@ -44,6 +44,11 @@ public:
     /// <param name="height">Image height</param>
     Image(size_t width, size_t height);
 
+    /// <summary>
+    /// This constructor allows to convert from image with one channel storage type.
+    /// </summary>
+    /// <typeparam name="TSourceChannelType"></typeparam>
+    /// <param name="image"></param>
     template<typename TSourceChannelType>
     Image(const Image<TSourceChannelType>& image)
       : m_width{ image.getWidth() }

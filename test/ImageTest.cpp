@@ -1,4 +1,6 @@
-﻿#include <bamboo/Image.h>
+﻿#include "ColorMatcher.h"
+
+#include <bamboo/Image.h>
 
 #include <gtest/gtest.h>
 
@@ -69,8 +71,7 @@ TEST(ImageFloatTest, LightGray_PathConstructor)
     EXPECT_EQ(image.size(), 1377 * 1127 * 4 * 4);
     EXPECT_TRUE(static_cast<bool>(image));
     EXPECT_TRUE(image.isValid());
-
-    EXPECT_EQ(image.getPixel(0, 0), ColorF(0.7647, 0.7647, 0.7647, 1.0));
+    EXPECT_THAT(image.getPixel(0, 0), ColorsFEqual(ColorF{ 0.7647, 0.7647, 0.7647, 1.0 }));
 }
 
 TEST(ImageTest, ImageFromMemory)

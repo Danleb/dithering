@@ -1,46 +1,9 @@
-﻿#include <bamboo/Color.h>
-
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
+﻿#include "ColorMatcher.h"
 
 using namespace testing;
 
-constexpr auto COLOR_EPS = 0.0001f;
-
-namespace glm
-{
-void PrintTo(const bamboo::ColorB& value, ::std::ostream* os)
-{
-    *os << "(" << static_cast<int>(value.r) << ", " << static_cast<int>(value.g) << ", "
-        << static_cast<int>(value.b) << ", " << static_cast<int>(value.a) << ")";
-}
-
-void PrintTo(const bamboo::ColorF& value, ::std::ostream* os)
-{
-    *os << "(" << value.r << ", " << value.g << ", " << value.b << ", " << value.a << ")";
-}
-}
-
-MATCHER_P(ColorsFEqual,
-          color,
-          std::string((negation ? "doesn't equal" : "equals")) + " to " + PrintToString(color))
-{
-    return Matches(FloatNear(color.r, COLOR_EPS))(arg.r) &&
-           Matches(FloatNear(color.g, COLOR_EPS))(arg.g) &&
-           Matches(FloatNear(color.b, COLOR_EPS))(arg.b) &&
-           Matches(FloatNear(color.a, COLOR_EPS))(arg.a);
-}
-
-MATCHER_P(ColorsBEqual,
-          color,
-          std::string((negation ? "doesn't equal" : "equals")) + " to " + PrintToString(color))
-{
-    return color.r == arg.r && color.g == arg.g && color.b == arg.b && color.a == arg.a;
-}
-
 namespace bamboo::test
 {
-
 TEST(ColorConversion, ColorB2ColorF_White)
 {
     bamboo::ColorB c1{ 255, 255, 255, 255 };

@@ -56,6 +56,20 @@
       "type": "default",
       "project": "CMakeLists.txt",
       "projectTarget": "",
+      "name": "BlackWhite ManhattanBridge",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/ManhattanBridge.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "name": "BlackWhite OldFord100",
+      "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/OldFord100.jpg" ]
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
       "name": "BlackWhite Light gray solid color",
       "args": [ "../../../../configs/BlackWhite.json", "../../../../pics/LightGray_c3.jpg" ]
     },
