@@ -21,36 +21,36 @@ void BM_FloydSteinbergDithering(benchmark::State& state,
 
 void BM_FloydSteinbergDithering_BlackWhiteCat(benchmark::State& state)
 {
-    const auto imagePath = "../../../../pics/Cat.jpg";
-    const auto configPath = "../../../../configs/BlackWhite.json";
+    const auto imagePath = "./pics/Cat.jpg";
+    const auto configPath = "./configs/BlackWhite.json";
     BM_FloydSteinbergDithering(state, imagePath, configPath);
 }
 
 void BM_FloydSteinbergDithering_BlackWhiteParis(benchmark::State& state)
 {
-    const auto imagePath = "../../../../pics/Paris.jpg";
-    const auto configPath = "../../../../configs/BlackWhite.json";
+    const auto imagePath = "./pics/Paris.jpg";
+    const auto configPath = "./configs/BlackWhite.json";
     BM_FloydSteinbergDithering(state, imagePath, configPath);
 }
 
 void BM_FloydSteinbergDithering_BlackWhite_LakeView(benchmark::State& state)
 {
-    const auto imagePath = "../../../../pics/LakeView.jpg";
-    const auto configPath = "../../../../configs/BlackWhite.json";
+    const auto imagePath = "./pics/LakeView.jpg";
+    const auto configPath = "./configs/BlackWhite.json";
     BM_FloydSteinbergDithering(state, imagePath, configPath);
 }
 
 void BM_FloydSteinbergDithering_BlackWhite_Cathedral(benchmark::State& state)
 {
-    const auto imagePath = "../../../../pics/Cathedral.jpg";
-    const auto configPath = "../../../../configs/BlackWhite.json";
+    const auto imagePath = "./pics/Cathedral.jpg";
+    const auto configPath = "./configs/BlackWhite.json";
     BM_FloydSteinbergDithering(state, imagePath, configPath);
 }
 
 void BM_FloydSteinbergDithering_RGB_CityView(benchmark::State& state)
 {
-    const auto imagePath = "../../../../pics/CityView.jpg";
-    const auto configPath = "../../../../configs/RGB_Palette.json";
+    const auto imagePath = "./pics/CityView.jpg";
+    const auto configPath = "./configs/RGB_Palette.json";
     BM_FloydSteinbergDithering(state, imagePath, configPath);
 }
 
