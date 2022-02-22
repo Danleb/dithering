@@ -1,5 +1,12 @@
 add_executable(dithering_test "")
 
+message(BINARY FOLDER: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+file(CREATE_LINK
+    ${PROJECT_SOURCE_DIR}/pics
+    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/pics
+    SYMBOLIC)
+
 file (GLOB COLLECTED_SOURCES "*.cpp")
 target_sources(dithering_test PRIVATE 
 	${COLLECTED_SOURCES}

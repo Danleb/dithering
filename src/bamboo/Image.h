@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <stb_image.h>
 
+#include <cstring>
 #include <filesystem>
 #include <memory>
 #include <variant>
@@ -24,10 +25,10 @@ class Image
     static constexpr auto TARGET_CHANNELS_COUNT = 3;
 
 public:
-    using ImageData = typename TColorChannel*;
-    using ConstImageData = typename const ImageData;
-    using ColorT = typename Color<TColorChannel>;
-    using ConstColorRef = typename const ColorT&;
+    using ImageData = TColorChannel*;
+    using ConstImageData =  const ImageData;
+    using ColorT = Color<TColorChannel>;
+    using ConstColorRef = const ColorT&;
 
     Image();
 

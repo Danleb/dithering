@@ -7,3 +7,5 @@ obj/
 bin/
 .gradle/
 samples/
+CMakeLists.txt.user*
+pics/*_dithered.*

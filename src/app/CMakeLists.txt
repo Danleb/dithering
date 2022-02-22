@@ -1,5 +1,10 @@
 add_executable(dithering_app "")
 
+file(CREATE_LINK
+    ${PROJECT_SOURCE_DIR}/configs
+    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/configs
+    SYMBOLIC)
+
 file (GLOB COLLECTED_SOURCES "*.cpp")
 target_sources(dithering_app PRIVATE 
 	${COLLECTED_SOURCES}

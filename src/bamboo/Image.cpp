@@ -12,6 +12,7 @@
 namespace
 {
 
+#if _WIN32
 std::shared_ptr<char[]> convertPath(const std::filesystem::path& path)
 {
     constexpr auto BUFFER_SIZE = 4096;
@@ -19,6 +20,7 @@ std::shared_ptr<char[]> convertPath(const std::filesystem::path& path)
     stbiw_convert_wchar_to_utf8(buffer.get(), BUFFER_SIZE, path.c_str());
     return buffer;
 }
+#endif
 
 } // namespace
 
@@ -41,7 +43,13 @@ template<typename TColorChannel>
 Image<TColorChannel>::Image(const std::filesystem::path& path)
   : Image()
 {
-    const auto buffer = convertPath(path);
+#if _WIN32
+    const auto pathStringBuffer = convertPath(path);
+    const auto pathStringPtr = pathStringBuffer.get();
+#else
+    const auto pathStringPtr = path.c_str();
+#endif
+
     if (!std::filesystem::exists(path))
     {
         return;
@@ -49,13 +57,13 @@ Image<TColorChannel>::Image(const std::filesystem::path& path)
 
     if constexpr (std::is_same_v<TColorChannel, uint8_t>)
     {
-        m_data = stbi_load(buffer.get(), &m_width, &m_height, nullptr, TARGET_CHANNELS_COUNT);
+        m_data = stbi_load(pathStringPtr, &m_width, &m_height, nullptr, TARGET_CHANNELS_COUNT);
     }
     else
     {
         // we want to load image to float buffer, but without gamma correction
         stbi_ldr_to_hdr_gamma(1.0f);
-        m_data = stbi_loadf(buffer.get(), &m_width, &m_height, nullptr, TARGET_CHANNELS_COUNT);
+        m_data = stbi_loadf(pathStringPtr, &m_width, &m_height, nullptr, TARGET_CHANNELS_COUNT);
         stbi_ldr_to_hdr_gamma(2.2f);
     }
 
@@ -166,13 +174,19 @@ size_t Image<TColorChannel>::size() const
 template<typename TColorChannel>
 void Image<TColorChannel>::save(const std::filesystem::path& path) const
 {
-    const auto buffer = convertPath(path);
+#if _WIN32
+    const auto pathStringBuffer = convertPath(path);
+    const auto pathStringPtr = pathStringBuffer.get();
+#else
+    const auto pathStringPtr = path.c_str();
+#endif
+
     const auto& tempImage = getImageForSave();
 
     const auto extension = path.extension();
     if (extension == ".png")
     {
-        const auto res = stbi_write_png(buffer.get(),
+        const auto res = stbi_write_png(pathStringPtr,
                                         m_width,
                                         m_height,
                                         TARGET_CHANNELS_COUNT,
@@ -185,7 +199,7 @@ void Image<TColorChannel>::save(const std::filesystem::path& path) const
         // from 1 to 100
         const auto quality = 100;
         const auto res = stbi_write_jpg(
-          buffer.get(), m_width, m_height, TARGET_CHANNELS_COUNT, tempImage.getData(), quality);
+          pathStringPtr, m_width, m_height, TARGET_CHANNELS_COUNT, tempImage.getData(), quality);
         assert(res);
     }
 }

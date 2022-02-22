@@ -25,9 +25,9 @@ void fillImage(bamboo::ImageB& image, const bamboo::ColorB& color = DefaultColor
 
 namespace bamboo::test
 {
-const auto CatPath = "../../../../pics/Cat.jpg";
-const auto BuildingPath = "../../../../pics/Cathedral.jpg";
-const auto LightGrayPath = "../../../../pics/LightGray_c3.jpg";
+const auto CatPath = "./pics/Cat.jpg";
+const auto BuildingPath = "./pics/Cathedral.jpg";
+const auto LightGrayPath = "./pics/LightGray_c3.jpg";
 
 TEST(ImageTest, DefaultConstructor)
 {
