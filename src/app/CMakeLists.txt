@@ -1,5 +1,6 @@
 add_executable(dithering_app "")
 
+file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 file(CREATE_LINK
     ${PROJECT_SOURCE_DIR}/configs
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/configs
